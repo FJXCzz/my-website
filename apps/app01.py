@@ -10,11 +10,11 @@ class Item(BaseModel):
     tax: float 
 
 
-@field_validator("tax")
-def tax_must_15(cls,v):
-    if v <= 10.8:
-        raise ValueError('tax must be smalthan 10.8')
-    return v
+    @field_validator("tax")
+    def tax_must_15(cls,v):
+        if v <= 10.8:
+            raise ValueError('tax must be smalthan 10.8')
+        return v
 
 
 
