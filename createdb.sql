@@ -1,3 +1,12 @@
+/*
+ * @Author: FJXCzz 
+ * @Date: 2025-01-23 17:54:50
+ * @LastEditors: Plamephia moyunyongan@gmail.com
+ * @LastEditTime: 2025-01-23 18:13:14
+ * @FilePath: \my-website\createdb.sql
+ * @Description: Database.
+ */
+
 show databases
 show tables
 create database website
@@ -28,6 +37,19 @@ create table articles (
     constraint fk_articles_users foreign key (creator_id) references users(user_id)  on delete set null
 );
 -- crester_id关联users表中的user_id,在删除用户时creater_id设为null
+-- 1. CYH: 文章内容可以使用markdown格式存储，符合纯文本要求。图像可以以注释2的逻辑处理。
+
+CREATE TABLE article_images (
+    image_id INT AUTO_INCREMENT PRIMARY KEY COMMENT '图片ID',
+    article_id INT NOT NULL COMMENT '关联文章ID',
+    image_data LONGBLOB NOT NULL COMMENT '图片二进制数据',
+    upload_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '上传时间',
+    description VARCHAR(255) DEFAULT NULL COMMENT '图片描述',
+    FOREIGN KEY (article_id) REFERENCES articles(article_id) ON DELETE CASCADE
+);
+-- 2. CYH: 文章内容中包含图像，可以添加上面的table
+-- 图片来源可以是互联网，也可以是数据库。如果是网络图片，直接在前端获取，如http://www.news.cn/culture/20230509/f0bbc231386e457281c8027fc901a9d2/20230509f0bbc231386e457281c8027fc901a9d2_20230509c974f1119163413c8eecf4cf0d6c7c7e.jpg
+-- 否则从数据库中返回。
 
 create table tags(
     tag_id int auto_increment primary key comment '标签id',
