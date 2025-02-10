@@ -1,0 +1,6 @@
+需要安装的东西
+pip install aiomysql
+pip install tortoise-orm
+pip install python-multipart
+pip install pyjwt
+pip install passlib[bcrypt] 4.0.1

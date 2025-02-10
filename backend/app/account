@@ -1,0 +1,5 @@
+/user_id   主页 展示收藏和个人发表文章时间降序 个人信息 get
+
+user_id/collect  /user_id的收藏 get
+user_id/article  /user_id的文章 get
+/acount/setting  查看个人信息   get  修改个人信息POST

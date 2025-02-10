@@ -1,6 +1,10 @@
 from fastapi import FastAPI
 import uvicorn
 from fastapi.staticfiles import StaticFiles
+from typing import Annotated
+
+from fastapi import Depends, FastAPI
+from fastapi.security import OAuth2PasswordBearer
 
 
 
@@ -22,12 +26,19 @@ from apps.app05 import app05
 
 app = FastAPI()
 
-app.mount("/static",StaticFiles(directory="statics"))
 
 
 @app.get("/",tags=["Hello World"])
 async def root():
     return {"message": "Hello World"}
+
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+
+@app.get("/items/")
+async def read_items(token: Annotated[str, Depends(oauth2_scheme)]):
+    return {"token": token}
 
 
 
@@ -44,5 +55,5 @@ app.include_router(app05,tags=["响应参数"])
 
 
 if __name__ == '__main__':
-    uvicorn.run("main:app",port=8080,reload=True)
+    uvicorn.run("main:app",port=8000,reload=True)
 
