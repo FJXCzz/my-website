@@ -1,3 +1,7 @@
+# 先安装require.txt里的东西，有些不全，
+# 在settings配置好连接数据库的信息，启动main.py自动在数据库中生成表
+# app文件夹存放各项功能的实现
+
 import uvicorn
 from fastapi import FastAPI,APIRouter
 from tortoise.contrib.fastapi import register_tortoise
