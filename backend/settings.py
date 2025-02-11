@@ -29,7 +29,8 @@ TORTOISE_ORM={
     }
 
 
-
-SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
-ALGORITHM = "HS256"
+#openssl rand -hex 32    生成加密token的密钥
+SECRET_KEY = "77522fa54d6bd15dd6ddd07cdb5cf48c0e3b9bd5991c233dd7b6dad19f0ea663"
+ALGORITHM = "HS256"  #token加密算法
+ACCESS_TOKEN_EXPIRE_MINUTES = 30   #token过期时间
 

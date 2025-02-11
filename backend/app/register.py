@@ -1,23 +1,31 @@
-from fastapi import APIRouter, HTTPException, status,Response
+from fastapi import APIRouter, HTTPException, Response
 from schemas import Register
 from models import *
-from func import *
+
+
 from passlib.context import CryptContext
-from func import is_username_exists
+
 
 signup = APIRouter()
 
+
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+def get_password_hash(password:str)-> str:    #加密密码
+    return pwd_context.hash(password)
+
+
+
+
+
 @signup.post('/register')
-
 async def register(user:Register):
-
-    a = await is_username_exists(user.username)
+    #判断用户名是否已存在
+    a = await Users.get_or_none(username=user.username)
     if a:
         raise HTTPException(status_code=409,detail='用户名已存在')
-
-
     #加密密码
-    hashed_password = get_password_hash(user.username)
+    hashed_password = get_password_hash(user.password)
     #保存用户名和加密后的密码
     try:
         result = await Users.create(username=user.username,hashed_password=hashed_password)
