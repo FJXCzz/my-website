@@ -34,3 +34,8 @@ SECRET_KEY = "77522fa54d6bd15dd6ddd07cdb5cf48c0e3b9bd5991c233dd7b6dad19f0ea663"
 ALGORITHM = "HS256"  #token加密算法
 ACCESS_TOKEN_EXPIRE_MINUTES = 30   #token过期时间
 
+
+
+
+UPLOAD_DIR = "uploads"  #文章图片上传路径
+

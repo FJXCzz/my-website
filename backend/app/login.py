@@ -65,7 +65,7 @@ async def get_current_user(token:str = Depends(oauth2_scheme)):
     user = await Users.get_or_none(username=username)    # 查找用户
     if user is None:
         raise credentials_exception   # 如果找不到用户，抛出认证失败异常
-    return user
+    return user#返回了一个用户实例
 
 
 
@@ -77,7 +77,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm=Depends())
     user = await authenticate_user(form_data.username, form_data.password)
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
+            status_code=500,
             detail="账号或密码错误",
             headers={"WWW-Authenticate": "Bearer"},
         )

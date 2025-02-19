@@ -28,8 +28,9 @@ async def register(user:Register):
     hashed_password = get_password_hash(user.password)
     #保存用户名和加密后的密码
     try:
-        result = await Users.create(username=user.username,hashed_password=hashed_password)
-        print(result.username)
+        result = await Users.create(username=user.username,
+                                    hashed_password=hashed_password,
+                                    avatar=b'\x00\x00\x00\x00\x00\x00\x00\x00')
         return Response(status_code=201,content='用户创建成功')
     except Exception as e:
         raise HTTPException(status_code=500,detail=str(e))
