@@ -12,7 +12,8 @@ from app.register import signup
 from app.login import applogin
 from app.user import app_user
 from app.articles import app_article
-
+from app.collect import app_collect
+from app.comment import app_comment
 app = FastAPI()
 
 register_tortoise(
@@ -31,7 +32,8 @@ app.include_router(signup, prefix='/api', tags=["用户注册，用户名长度�
 app.include_router(applogin, prefix='/api',tags=['登录，返回一个token'])
 app.include_router(app_user, prefix='/api')
 app.include_router(app_article, prefix='/api')
-
+app.include_router(app_collect, prefix='/api')
+app.include_router(app_comment, prefix='/api')
 
 
 

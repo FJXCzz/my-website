@@ -57,16 +57,17 @@ async def create_article(
 
 
 
-@app_article.get("/article/{article_id}",tags=['查看文章'])
-async def get_article(article_id: int):
+@app_article.get("/article/{article_id}",tags=['查看文章，调用一次增加1浏览量'])
+async def get_article_view(article_id: int):
+     #查看文章是否存在
     article = await Articles.get(article_id=article_id)
     if not article:
         raise HTTPException(status_code=404, detail="Article not found")
-        # 更新阅读次数
+     # 更新阅读次数
     article.view_count += 1
     await article.save() 
-
-    tags_id = await article.tags.all().values("tag_name")  # 查询相关标签
+     # 查询相关标签
+    tags_id = await article.tags.all().values("tag_name")  
 
     if tags_id:
         return {
@@ -77,7 +78,21 @@ async def get_article(article_id: int):
 
 
 
+@app_article.get("/article/other/{article_id}",tags=['其他函数需要查看文章时用'])
+async def get_article(article_id: int):
+    #查看文章是否存在
+    article = await Articles.get(article_id=article_id)
+    if not article:
+        raise HTTPException(status_code=404, detail="Article not found")
+    # 查询相关标签
+    tags_id = await article.tags.all().values("tag_name")
 
+    if tags_id:
+        return {
+        "article":article, "tags": tags_id
+    }
+    return {"article":article}
+ # 返回文章内容（Markdown 格式，可以转换为 HTML）
 
 
 
@@ -180,7 +195,7 @@ async def delete_article(
         )
     
 
-       # 删除文章与标签的关联
+     # 删除文章与标签的关联
     await article.tags.clear()  # 清除文章和标签之间的关系
 
     # 删除文章中的图片
@@ -200,3 +215,52 @@ async def delete_article(
 
 
 
+@app_article.get("/api/article/new",tags=['查看最新发表的文章'])
+
+async def get_new_article(page:int):
+    # 每页显示 10 条文章
+    page_size = 10
+    # 计算分页的起始位置
+    offset = (page - 1) * page_size
+    # 获取最新发表的文章，按时间倒序排序
+    articles = await Articles.order_by(Articles.created_time.desc()).offset(offset).limit(page_size).all()
+    # 获取文章的总数
+    articles_count = await Articles.count()
+    # 提取文章 ID
+    article_ids = [article.id for article in articles]
+    # 计算总页数
+    total_pages = (articles_count + page_size - 1) // page_size  # 向上取整
+    return {
+        "article_ids": article_ids,
+        "total_count": articles_count,
+        "total_pages": total_pages,
+        "current_page": page
+        }
+
+
+@app_article.get("/api/article/tag",tags=['根据标签查找文章'])
+
+async def get_tag_article(page:int, tag_name:str):
+     # 每页显示 10 条文章
+    page_size = 10
+    # 计算分页的起始位置
+    offset = (page - 1) * page_size
+
+    # 获取指定标签的文章，按时间倒序排序
+    articles = await Articles.filter(tags__tag_name=tag_name).order_by(Articles.create_time.desc()).offset(offset).limit(page_size).all()
+
+    # 获取指定标签的文章总数
+    articles_count = await Articles.filter(tags__tag_name=tag_name).count()
+
+    # 提取文章 ID
+    article_ids = [article.article_id for article in articles]
+
+    # 计算总页数
+    total_pages = (articles_count + page_size - 1) // page_size  # 向上取整
+
+    return {
+        "article_ids": article_ids,
+        "total_count": articles_count,
+        "total_pages": total_pages,
+        "current_page": page
+    }

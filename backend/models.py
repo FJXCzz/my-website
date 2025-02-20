@@ -43,7 +43,7 @@ class Tags(Model):
     
 class Collects(Model):
     collect_id = fields.IntField(primary_key=True, auto_increment=True, description='收藏id')
-    collect_time = fields.DateField(auto_now_add=True,description='收藏时间')
+    collect_time = fields.DatetimeField(auto_now_add=True,description='收藏时间')
     user = fields.ForeignKeyField('models.Users', related_name='collects', on_delete=fields.CASCADE, description='收藏用户id')
     article = fields.ForeignKeyField('models.Articles', related_name='collects', on_delete=fields.CASCADE, description='收藏文章id')
 
