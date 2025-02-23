@@ -1,7 +1,6 @@
-from fastapi import UploadFile, Form, HTTPException, APIRouter,Depends
+from fastapi import HTTPException, APIRouter,Depends
 from schemas import *
 from models import *
-from typing import List,Optional
 from app.login import get_current_user
 
 
