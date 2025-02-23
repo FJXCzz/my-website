@@ -56,6 +56,6 @@
 - **Comment（评论）** 表与用户和文章关联，管理评论信息。
 - **Category（分类）** 和 **Tag（标签）** 表存储用于文章分类和标签的元数据。
 
-![E-R图](resource\E-R图.svg)
+![E-R图](resource/E-R图.svg)
 
-![API接口](resource\API.png)
+![API接口](resource/API.png)
